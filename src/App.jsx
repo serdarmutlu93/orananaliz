@@ -4,7 +4,6 @@ import Login from './pages/Login';
 import Bulten from './pages/Bulten';
 import Admin from './pages/Admin';
 import Dashboard from './pages/Dashboard';
-import Sonuclar from './pages/Sonuclar';
 import Analiz from './pages/Analiz';
 
 /* ============================================
@@ -154,7 +153,6 @@ function BottomNav({ view, onNav }) {
   const tabs = [
     { id: 'bulten', label: 'Ana Sayfa', icon: <Home size={21} /> },
     { id: 'canli', label: 'Bülten', icon: <Zap size={21} /> },
-    { id: 'sonuclar', label: 'Sonuçlar', icon: <Trophy size={21} /> },
     { id: 'analiz', label: 'Analiz', icon: <BarChart3 size={21} /> },
     { id: 'profil', label: 'Profil', icon: <User size={21} /> },
   ];
@@ -269,8 +267,6 @@ function AppContent() {
           <Profil />
         ) : view === 'canli' ? (
           <Bulten />
-        ) : view === 'sonuclar' ? (
-          <Sonuclar />
         ) : view === 'analiz' ? (
           <Analiz />
         ) : (

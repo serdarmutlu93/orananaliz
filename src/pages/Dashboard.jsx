@@ -17,16 +17,6 @@ export default function Dashboard({ onNavigate }) {
       badge: 'CANLI'
     },
     {
-      id: 'sonuclar',
-      icon: <Trophy size={22} />,
-      title: 'Maç Sonuçları',
-      desc: 'Bitmiş maçlar ve skorlar',
-      color: '#f59e0b',
-      bg: 'rgba(245,158,11,.1)',
-      border: 'rgba(245,158,11,.2)',
-      badge: 'AKTİF'
-    },
-    {
       id: 'analiz',
       icon: <BarChart3 size={22} />,
       title: 'Analizler',
@@ -94,9 +84,9 @@ export default function Dashboard({ onNavigate }) {
         marginBottom: 20
       }}>
         {[
-          { label: 'API Durum', value: 'AKTİF', icon: <Zap size={14} />, color: 'var(--green)' },
-          { label: 'Veri Kaynağı', value: '2 API', icon: <Target size={14} />, color: 'var(--accent)' },
-          { label: 'Üye', value: user.role === 'admin' ? 'Admin' : 'Üye', icon: <Users size={14} />, color: 'var(--purple)' },
+          { label: 'Oyuncu Verisi', value: '11.000+', icon: <Users size={14} />, color: 'var(--accent)' },
+          { label: 'Altyapı', value: 'iddaa.com', icon: <Zap size={14} />, color: 'var(--purple)' },
+          { label: 'Odak', value: 'Tek Maçlar', icon: <Target size={14} />, color: 'var(--green)' },
         ].map(s => (
           <div key={s.label} style={{
             padding: '12px', background: 'var(--bg-card)',

@@ -559,6 +559,12 @@ export default function Bulten() {
       ? matches.filter(m => m.Teams?.toLowerCase().includes(q) || m.League?.toLowerCase().includes(q))
       : [...matches];
 
+    // Sadece Sportmonks form verisi olan maçları göster (U21, hazırlık vs hariç)
+    const formKeys = Object.keys(teamForms);
+    if (formKeys.length > 0) {
+      filtered = filtered.filter(m => teamForms[m.Team1] || teamForms[m.Team2]);
+    }
+
     // Filtre uygula
     if (filter === 'popular') {
       filtered = filtered.filter(m => POPULAR_LEAGUES.some(pl => m.League?.includes(pl)));
@@ -604,7 +610,7 @@ export default function Bulten() {
       grouped[key].matches.push(m);
     });
     return Object.values(grouped);
-  }, [matches, search, filter]);
+  }, [matches, search, filter, teamForms]);
 
   const toggle = id => setCollapsed(p => ({ ...p, [id]: !p[id] }));
 
@@ -642,9 +648,7 @@ export default function Bulten() {
         <div style={{ display: 'flex', gap: 4, width: '100%' }}>
           {[
             { id: 'all', label: 'Tümü' },
-            { id: 'popular', label: 'Popüler' },
             { id: 'time', label: 'Saate Göre' },
-            { id: 'single', label: 'Tek Maç' },
           ].map(f => (
             <button key={f.id} onClick={() => setFilter(prev => prev === f.id ? 'all' : f.id)} style={{
               flex: 1, padding: '6px 0', borderRadius: 'var(--radius-sm)',
