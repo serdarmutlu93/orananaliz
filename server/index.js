@@ -25,9 +25,10 @@ const logActivity = async (userId, type, action, ip) => {
 
 const getActiveBan = async (userId, ip) => {
   const now = new Date().toISOString();
-  return db.prepare(
-    "SELECT * FROM bans WHERE (user_id = ? OR ip = ?) AND expires_at > ? ORDER BY expires_at DESC LIMIT 1"
-  ).get(userId || -1, ip || '', now);
+  return (await pool.query(
+    "SELECT * FROM bans WHERE (user_id = ? OR ip = ?) AND expires_at > ? ORDER BY expires_at DESC LIMIT 1",
+    [userId || -1, ip || '', now]
+  ))[0][0];
 };
 
 // ============================================
@@ -301,14 +302,18 @@ function extractIYOdds(bets) {
 
 // Belirli bir tarih aralığı için 6+ gol maçları API'den çekip DB'ye kaydet
 async function syncGol6(daysBack = 3) {
-  const insert = db.prepare(`
-    INSERT OR REPLACE INTO gol6_matches 
+  const insertQuery = `
+    INSERT INTO gol6_matches 
     (match_id, match_date, team1, team2, league, league_flag, 
      home_score, away_score, total_goals, 
      home_win, draw, away_win, over25, under25, 
      iy_15_ust, iy_kg_var, ms_35_ust, bets_json)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `);
+    ON DUPLICATE KEY UPDATE 
+     home_score=VALUES(home_score), away_score=VALUES(away_score), total_goals=VALUES(total_goals),
+     home_win=VALUES(home_win), draw=VALUES(draw), away_win=VALUES(away_win), over25=VALUES(over25), under25=VALUES(under25),
+     iy_15_ust=VALUES(iy_15_ust), iy_kg_var=VALUES(iy_kg_var), ms_35_ust=VALUES(ms_35_ust), bets_json=VALUES(bets_json)
+  `;
 
   const today = new Date();
   let saved = 0;
