@@ -91,6 +91,44 @@ export default function Admin() {
         </div>
       </div>
 
+      {/* API SYNC SECTION */}
+      <div style={{ marginBottom: 20, padding: '16px 18px', background: 'var(--bg-card)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-subtle)' }}>
+        <h3 style={{ fontSize: 14, fontWeight: 800, marginBottom: 10, color: 'var(--text-1)' }}>Veritabanı Senkronizasyonu (API)</h3>
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+          <button onClick={async (e) => {
+            const btn = e.currentTarget;
+            const originalText = btn.innerText;
+            btn.innerText = 'Senkronize Ediliyor... (Lütfen bekleyin)';
+            btn.disabled = true;
+            try {
+              const res = await fetch(`${API}/sportmonks/sync`, { method: 'POST', headers });
+              const data = await res.json();
+              alert(data.message || data.error || 'İşlem bitti');
+            } catch(e) { alert('Hata oluştu'); }
+            btn.innerText = originalText;
+            btn.disabled = false;
+          }} style={{ padding: '10px 16px', background: 'rgba(59,130,246,.1)', color: 'var(--accent)', border: '1px solid rgba(59,130,246,.3)', borderRadius: 'var(--radius-sm)', fontSize: 12, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6 }}>
+            <Activity size={16} /> Sportmonks & Form Senkronize Et
+          </button>
+          
+          <button onClick={async (e) => {
+            const btn = e.currentTarget;
+            const originalText = btn.innerText;
+            btn.innerText = 'Çekiliyor...';
+            btn.disabled = true;
+            try {
+              const res = await fetch(`${API}/nosy/gol6/sync`, { method: 'POST', headers, body: JSON.stringify({ days: 30 }) });
+              const data = await res.json();
+              alert(`İşlem bitti. Veritabanına yeni eklenen: ${data.saved} maç. Toplam kayıt: ${data.total}`);
+            } catch(e) { alert('Hata oluştu'); }
+            btn.innerText = originalText;
+            btn.disabled = false;
+          }} style={{ padding: '10px 16px', background: 'rgba(16,185,129,.1)', color: 'var(--green)', border: '1px solid rgba(16,185,129,.3)', borderRadius: 'var(--radius-sm)', fontSize: 12, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6 }}>
+            <RefreshCw size={16} /> 6+ Gol Maçlarını Çek
+          </button>
+        </div>
+      </div>
+
       {/* ADD USER FORM */}
       <form onSubmit={addUser} style={{
         display: 'flex', gap: 8, marginBottom: 16, padding: '14px 16px',

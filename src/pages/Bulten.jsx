@@ -59,7 +59,7 @@ function MatchDetail({ match, onBack }) {
       setLoading(true);
       setError('');
       try {
-        const res = await fetch(`http://localhost:3001/api/nosy/match/${match.MatchID}`, {
+        const res = await fetch(`https://orananaliz.onrender.com/api/nosy/match/${match.MatchID}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const data = await res.json();
@@ -91,7 +91,7 @@ function MatchDetail({ match, onBack }) {
         const all = {};
         for (const team of [match.Team1, match.Team2]) {
           console.log('[SM] Loading team:', team);
-          const res = await fetch(`http://localhost:3001/api/sportmonks/player-stats?team=${encodeURIComponent(team)}`, {
+          const res = await fetch(`https://orananaliz.onrender.com/api/sportmonks/player-stats?team=${encodeURIComponent(team)}`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           const data = await res.json();
@@ -113,8 +113,8 @@ function MatchDetail({ match, onBack }) {
     const loadForm = async () => {
       try {
         const [r1, r2] = await Promise.all([
-          fetch(`http://localhost:3001/api/sportmonks/team-form?team=${encodeURIComponent(match.Team1)}`, { headers: { Authorization: `Bearer ${token}` } }),
-          fetch(`http://localhost:3001/api/sportmonks/team-form?team=${encodeURIComponent(match.Team2)}`, { headers: { Authorization: `Bearer ${token}` } })
+          fetch(`https://orananaliz.onrender.com/api/sportmonks/team-form?team=${encodeURIComponent(match.Team1)}`, { headers: { Authorization: `Bearer ${token}` } }),
+          fetch(`https://orananaliz.onrender.com/api/sportmonks/team-form?team=${encodeURIComponent(match.Team2)}`, { headers: { Authorization: `Bearer ${token}` } })
         ]);
         const [d1, d2] = await Promise.all([r1.json(), r2.json()]);
         setTeamForm({ team1: d1.data || [], team2: d2.data || [] });
@@ -520,7 +520,7 @@ export default function Bulten() {
     setError('');
     try {
       const dateParam = date ? `?date=${date}` : '';
-      const res = await fetch(`http://localhost:3001/api/nosy/bulten${dateParam}`, {
+      const res = await fetch(`https://orananaliz.onrender.com/api/nosy/bulten${dateParam}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -543,7 +543,7 @@ export default function Bulten() {
   useEffect(() => {
     if (matches.length === 0) return;
     const allTeams = [...new Set(matches.flatMap(m => [m.Team1, m.Team2]).filter(Boolean))];
-    fetch('http://localhost:3001/api/sportmonks/team-form-bulk', {
+    fetch('https://orananaliz.onrender.com/api/sportmonks/team-form-bulk', {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ teams: allTeams })

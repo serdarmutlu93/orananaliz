@@ -26,7 +26,7 @@ function GolAlti({ onBack }) {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch(`http://localhost:3001/api/nosy/gol6?days=${days || dayFilter}`, {
+      const res = await fetch(`https://orananaliz.onrender.com/api/nosy/gol6?days=${days || dayFilter}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -44,7 +44,7 @@ function GolAlti({ onBack }) {
   const handleSync = async () => {
     setSyncing(true);
     try {
-      await fetch('http://localhost:3001/api/nosy/gol6/sync', {
+      await fetch('https://orananaliz.onrender.com/api/nosy/gol6/sync', {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ days: 30 })
@@ -69,7 +69,7 @@ function GolAlti({ onBack }) {
 
     setSimilarLoading(p => ({ ...p, [id]: true }));
     try {
-      const res = await fetch(`http://localhost:3001/api/nosy/gol6/similar/${id}`, {
+      const res = await fetch(`https://orananaliz.onrender.com/api/nosy/gol6/similar/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
